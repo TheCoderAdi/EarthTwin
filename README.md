@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# EarthTwin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EarthTwin is a React + TypeScript single-page app that renders a 3D interactive globe and simulates environmental metrics from a user's lifestyle.
 
-Currently, two official plugins are available:
+This repository contains the frontend app (Vite). The project uses react-three-fiber (three.js) for 3D rendering, Tailwind CSS for styling, and Radix/shadcn UI primitives.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Quick overview
 
-## React Compiler
+- Frontend: React + TypeScript, Vite
+- 3D: react-three-fiber (three.js)
+- UI: Tailwind CSS, Radix primitives, shadcn components
+- Snapshot/capture: `src/components/ShareSnapshot.tsx` (special handling for WebGL canvases and SVGs)
+- API wrapper: `src/lib/earthApi.ts`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Recent changes (important)
 
-## Expanding the ESLint configuration
+- Client-side mock fallbacks removed — app expects backend at `http://localhost:5000`.
+- Earth globe sizing and masking fixed (canvas rounded to avoid visible corners).
+- Snapshot improvements — canvases and inline SVGs are swapped to images before capture; Carbon Score is hidden during capture to produce a globe-only image.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Local development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Requirements: Node.js (LTS), npm
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```pwsh
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```pwsh
+npm run dev
 ```
+
+Build for production:
+
+```pwsh
+npm run build
+```
+
+## Files of interest
+
+- `src/components/EarthGlobe.tsx` — 3D globe and shaders
+- `src/components/ShareSnapshot.tsx` — snapshot/capture logic
+- `src/components/MetricGauge.tsx` — carbon score gauge
+- `src/lib/earthApi.ts` — API wrapper
